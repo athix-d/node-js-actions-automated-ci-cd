@@ -6,7 +6,7 @@ app.use(express.json());
 let tasks = [];
 
 app.get('/', (req, res) => {
-    res.send('App is LIVE on EC2 via CI/CD!');
+    res.send('App is LIVE on EC2 via CI/CD - actions in use!');
 });
 
 app.get('/tasks', (req, res) => {
