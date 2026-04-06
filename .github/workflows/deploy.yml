@@ -24,7 +24,6 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            cd task-app
             git pull origin main
             npm install
             pm2 restart task-app || pm2 start src/app.js --name task-app
