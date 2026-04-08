@@ -17,13 +17,18 @@ jobs:
       # - name: Install dependencies
       #   run: npm install
 
+      - name: Setup SSH Connection
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+          # Add EC2 host to known_hosts (to prevent SSH warnings and confirmation prompts)
+          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+      
       - name: Deploy to EC2
-        uses: appleboy/ssh-action@v0.1.6
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          script: |
+        run: |
+          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}
             cd node-js-actions-automated-ci-cd/
             git pull origin main
             npm install
