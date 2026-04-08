@@ -28,8 +28,9 @@ jobs:
       
       - name: Deploy to EC2
         run: |
-          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}
+          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
             cd node-js-actions-automated-ci-cd/
             git pull origin main
             npm install
             pm2 restart task-app || pm2 start src/app.js --name task-app
+            EOF
